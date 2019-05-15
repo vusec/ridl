@@ -9,5 +9,3 @@ struct sys_info {
 
 int
 query_sys_info(struct sys_info *info);
-void
-show_system_tab(struct nk_context *ctx, struct style *style, struct sys_info *info, int flags);

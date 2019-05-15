@@ -11,6 +11,7 @@ find_package(X11)
 list(APPEND SOURCES
 	source/bitmap.c
 	source/human.c
+	source/system.c
 	source/topology.c)
 
 list(APPEND CLI_SOURCES
@@ -18,7 +19,8 @@ list(APPEND CLI_SOURCES
 	source/cli/main.c
 	source/cli/meltdown.c
 	source/cli/ridl.c
-	source/cli/spectre.c)
+	source/cli/spectre.c
+	source/cli/system.c)
 
 list(APPEND GUI_SOURCES
 	source/ui/l1tf.c

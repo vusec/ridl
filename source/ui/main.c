@@ -20,7 +20,8 @@
 #include <vuln/spectre.h>
 
 #include "style.h"
-#include "system.h"
+
+#include "../system.h"
 
 #if defined(_WIN32)
 #define FONT_NAME "Segoe UI"
@@ -28,6 +29,8 @@
 #define FONT_NAME "Vera Sans"
 #endif
 
+void
+show_system_tab(struct nk_context *ctx, struct style *style, struct sys_info *info, int flags);
 void
 show_meltdown_tab(struct nk_context *ctx, struct style *style, struct meltdown_info *info, int flags);
 void
