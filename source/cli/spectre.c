@@ -31,7 +31,7 @@ show_spectre_v1_info(struct spectre_info *info)
 void
 show_spectre_v2_info(struct spectre_info *info)
 {
-	printf(CLI_BOLD "Indirect Branch Speculation" CLI_RESET);
+	printf(CLI_BOLD "Indirect Branch Speculation:\n" CLI_RESET);
 
 	printf(" * Status: ");
 
