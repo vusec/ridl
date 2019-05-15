@@ -46,7 +46,7 @@ show_ridl_tab(struct nk_context *ctx, struct style *style, struct ridl_info *inf
 	nk_label_wrap(ctx, "Load Ports (MLPDS):");
 	ui_set_font(ctx, style->font);
 
-	if (info->msbds) {
+	if (info->mlpds) {
 		nk_label_colored_wrap(ctx, "Vulnerable", style->red);
 	} else {
 		nk_label_colored_wrap(ctx, "Not Affected", style->green);
@@ -56,7 +56,7 @@ show_ridl_tab(struct nk_context *ctx, struct style *style, struct ridl_info *inf
 	nk_label_wrap(ctx, "Uncached Memory (MDSUM)");
 	ui_set_font(ctx, style->font);
 
-	if (info->msbds) {
+	if (info->mdsum) {
 		nk_label_colored_wrap(ctx, "Vulnerable", style->red);
 	} else {
 		nk_label_colored_wrap(ctx, "Not Affected", style->green);
