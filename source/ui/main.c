@@ -18,6 +18,7 @@
 #include <vuln/meltdown.h>
 #include <vuln/ridl.h>
 #include <vuln/spectre.h>
+#include <vuln/ssb.h>
 
 #include "style.h"
 
@@ -40,7 +41,7 @@ show_spectre_v1_tab(struct nk_context *ctx, struct style *style, struct spectre_
 void
 show_spectre_v2_tab(struct nk_context *ctx, struct style *style, struct spectre_info *info, int flags);
 void
-show_ssb_tab(struct nk_context *ctx, struct style *style, struct spectre_info *info, int flags);
+show_ssb_tab(struct nk_context *ctx, struct style *style, struct ssb_info *info, int flags);
 void
 show_ridl_tab(struct nk_context *ctx, struct style *style, struct ridl_info *info, int flags);
 
@@ -90,6 +91,7 @@ main(void)
 	struct style style;
 	struct sys_info sys_info;
 	struct spectre_info spectre_info;
+	struct ssb_info ssb_info;
 	struct meltdown_info meltdown_info;
 	struct l1tf_info l1tf_info;
 	struct ridl_info ridl_info;
@@ -124,6 +126,7 @@ main(void)
 
 	query_sys_info(&sys_info);
 	query_spectre_info(&spectre_info);
+	query_ssb_info(&ssb_info);
 	query_meltdown_info(&meltdown_info);
 	query_l1tf_info(&l1tf_info);
 	query_ridl_info(&ridl_info);
@@ -139,7 +142,7 @@ main(void)
 			show_system_tab(ctx, &style, &sys_info, NK_MAXIMIZED);
 			show_spectre_v1_tab(ctx, &style, &spectre_info, NK_MAXIMIZED);
 			show_spectre_v2_tab(ctx, &style, &spectre_info, NK_MAXIMIZED);
-			show_ssb_tab(ctx, &style, &spectre_info, NK_MAXIMIZED);
+			show_ssb_tab(ctx, &style, &ssb_info, NK_MAXIMIZED);
 			show_meltdown_tab(ctx, &style, &meltdown_info, NK_MAXIMIZED);
 			show_l1tf_tab(ctx, &style, &l1tf_info, NK_MAXIMIZED);
 			show_ridl_tab(ctx, &style, &ridl_info, NK_MAXIMIZED);

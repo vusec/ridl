@@ -20,6 +20,7 @@ list(APPEND CLI_SOURCES
 	source/cli/meltdown.c
 	source/cli/ridl.c
 	source/cli/spectre.c
+	source/cli/ssb.c
 	source/cli/system.c)
 
 list(APPEND GUI_SOURCES
