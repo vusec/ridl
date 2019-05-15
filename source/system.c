@@ -13,7 +13,7 @@ query_sys_info(struct sys_info *info)
 	info->cpu_name = cpuid_get_brand_string();
 	info->os_name = get_os_name();
 	info->microcode = get_microcode();
-	info->memory = get_memory_size(0, 2);
+	info->memory = get_memory_size(1, 2);
 
 	return 0;
 }
