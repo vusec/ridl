@@ -66,7 +66,7 @@ show_meltdown_tab(struct nk_context *ctx, struct style *style, struct meltdown_i
 	nk_label_wrap(ctx, "PCID Invalidation:");
 	ui_set_font(ctx, style->font);
 
-	if (info->has_pcid) {
+	if (info->has_invpcid) {
 		nk_label_wrap(ctx, "Yes");
 	} else {
 		nk_label_wrap(ctx, "No");
