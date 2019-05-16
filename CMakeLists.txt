@@ -66,6 +66,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
 		source/msw/microcode.c
 		source/msw/os.c
 		source/msw/spectre.c
+		source/msw/ssb.c
 		source/msw/topology.c)
 	list(APPEND GUI_SOURCES
 		source/msw/canvas.c
@@ -114,14 +115,11 @@ else ()
 endif()
 
 add_executable(mdstool-cli ${SOURCES} ${CLI_SOURCES})
+add_executable(mdstool ${SOURCES} ${GUI_SOURCES})
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+	set_target_properties(mdstool PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 endif()
-
-add_definitions(-DHAVE_GUI)
-
-add_executable(mdstool ${SOURCES} ${GUI_SOURCES})
 
 include_directories(nuklear)
 include_directories(stb)
@@ -130,7 +128,9 @@ include_directories(${X11_INCLUDE_DIR} ${X11_Xft_INCLUDE_PATH} ${X11_Xrender_INC
 target_link_libraries(mdstool ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${X11_LIBRARIES} ${X11_Xft_LIB} ${X11_Xrender_LIB} ${FREETYPE_LIBRARIES})
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+	target_link_libraries(mdstool-cli gdiplus ntdll shlwapi)
 	target_link_libraries(mdstool gdiplus ntdll shlwapi)
 else()
+	target_link_libraries(mdstool-cli m)
 	target_link_libraries(mdstool m)
 endif()
