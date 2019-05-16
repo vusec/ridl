@@ -128,6 +128,7 @@ show_spectre_v2_info(struct spectre_info *info)
 			printf(CLI_BOLD CLI_RED "Disabled\n" CLI_RESET);
 		else
 			printf(CLI_BOLD "Disabled\n" CLI_RESET);
+		break;
 	default:
 		if (info->v2_affected)
 			printf(CLI_BOLD CLI_RED "Not Available\n" CLI_RESET);
