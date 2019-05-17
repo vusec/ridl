@@ -44,12 +44,16 @@ if (${X11_FOUND})
 		source/x11/font.c
 		source/x11/image.c
 		source/x11/window.c)
+	set(BUILD_GUI 1)
 endif()
 
 add_definitions(-DNK_INCLUDE_DEFAULT_ALLOCATOR)
 add_definitions(-DNK_INCLUDE_COMMAND_USERDATA)
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
+	list(APPEND SOURCES
+		source/x86/clang/cpuid.c)
+elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GCC")
 	list(APPEND SOURCES
 		source/x86/gcc/cpuid.c)
 elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
@@ -75,6 +79,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
 		source/msw/font.c
 		source/msw/image.c
 		source/msw/window.c)
+	set(BUILD_GUI 1)
 elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 	list(APPEND SOURCES
 		source/linux/l1tf.c
@@ -86,6 +91,16 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		source/linux/topology.c
 		source/linux/vuln.c)
 	list(APPEND SOURCES
+		source/unix/os.c)
+elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+	list(APPEND SOURCES
+		source/apple/l1tf.c
+		source/apple/meltdown.c
+		source/apple/memory.c
+		source/apple/microcode.c
+		source/apple/spectre.c
+		source/apple/ssb.c
+		source/apple/topology.c
 		source/unix/os.c)
 endif()
 
@@ -115,7 +130,10 @@ else ()
 endif()
 
 add_executable(mdstool-cli ${SOURCES} ${CLI_SOURCES})
-add_executable(mdstool ${SOURCES} ${GUI_SOURCES})
+
+if (${BUILD_GUI})
+	add_executable(mdstool ${SOURCES} ${GUI_SOURCES})
+endif()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 	set_target_properties(mdstool PROPERTIES LINK_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
@@ -124,13 +142,21 @@ endif()
 include_directories(nuklear)
 include_directories(stb)
 include_directories(include)
-include_directories(${X11_INCLUDE_DIR} ${X11_Xft_INCLUDE_PATH} ${X11_Xrender_INCLUDE_PATH} ${FREETYPE_INCLUDE_DIRS})
-target_link_libraries(mdstool ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${X11_LIBRARIES} ${X11_Xft_LIB} ${X11_Xrender_LIB} ${FREETYPE_LIBRARIES})
+
+if (${BUILD_GUI})
+	if (${X11_FOUND})
+		include_directories(${X11_INCLUDE_DIR} ${X11_Xft_INCLUDE_PATH} ${X11_Xrender_INCLUDE_PATH} ${FREETYPE_INCLUDE_DIRS})
+		target_link_libraries(mdstool ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${X11_LIBRARIES} ${X11_Xft_LIB} ${X11_Xrender_LIB} ${FREETYPE_LIBRARIES})
+	endif()
+endif()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 	target_link_libraries(mdstool-cli gdiplus ntdll shlwapi)
 	target_link_libraries(mdstool gdiplus ntdll shlwapi)
-else()
+else ()
 	target_link_libraries(mdstool-cli m)
-	target_link_libraries(mdstool m)
+
+	if (${BUILD_GUI})
+		target_link_libraries(mdstool m)
+	endif()
 endif()

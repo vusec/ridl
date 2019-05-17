@@ -17,9 +17,7 @@ query_ridl_info(struct ridl_info *info)
 
 	memset(info, 0, sizeof *info);
 
-	read_cpu_topology(&topo);
-
-	if (check_topology_smt(&topo)) {
+	if (read_cpu_topology(&topo) == 0 && check_topology_smt(&topo)) {
 		info->smt_vuln = 1;
 	}
 
