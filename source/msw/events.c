@@ -92,8 +92,11 @@ ui_process_events(void)
 {
 	MSG msg;
 
-	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+	if (!GetMessage(&msg, NULL, 0, 0))
+		return;
+
+	do {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
-	}
+	} while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE));
 }
