@@ -53,7 +53,7 @@ add_definitions(-DNK_INCLUDE_COMMAND_USERDATA)
 if ("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
 	list(APPEND SOURCES
 		source/x86/clang/cpuid.c)
-elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GCC")
+elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 	list(APPEND SOURCES
 		source/x86/gcc/cpuid.c)
 elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
