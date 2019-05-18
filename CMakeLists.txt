@@ -106,6 +106,7 @@ endif()
 
 list(APPEND SOURCES
 	source/x86/cpuid.c
+	source/x86/meltdown.c
 	source/x86/ridl.c)
 
 check_function_exists(asprintf HAVE_ASPRINTF)
