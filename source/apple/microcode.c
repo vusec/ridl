@@ -9,15 +9,19 @@
 char *
 get_microcode(void)
 {
-	char *s = NULL;
-	uint64_t value;
-	size_t size = sizeof value;
+	char *value;
+	size_t size;
+
+	if (sysctlbyname("machdep.cpu.microcode_value", NULL, &size, NULL, 0) < 0)
+		return NULL;
+
+	value = malloc(size);
+
+	if (!value)
+		return NULL;
 
 	if (sysctlbyname("machdep.cpu.microcode_value", &value, &size, NULL, 0) < 0)
 		return NULL;
 
-	if (asprintf(&s, "0x%llx\n", value) < 0)
-		return NULL;
-
-	return s; 
+	return value;
 }
