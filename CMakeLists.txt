@@ -36,7 +36,8 @@ if (${PKG_CONFIG_FOUND})
 	pkg_check_modules(FREETYPE freetype2)
 endif()
 
-if (${X11_FOUND})
+if (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin" AND
+	${X11_FOUND})
 	list(APPEND GUI_SOURCES
 		source/x11/canvas.c
 		source/x11/display.c
