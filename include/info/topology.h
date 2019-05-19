@@ -15,6 +15,12 @@ struct cpu_topology {
 };
 
 int
-check_topology_smt(struct cpu_topology *topo);
-int
 read_cpu_topology(struct cpu_topology *topo);
+void
+free_cpu_topology(struct cpu_topology *topo);
+size_t
+get_thread_count(void);
+size_t
+get_core_count(void);
+int
+check_smt(void);
