@@ -8,6 +8,10 @@ find_package(PkgConfig)
 find_package(Threads)
 find_package(X11)
 
+if (NOT DEFINED(X11_FOUND))
+	set(X11_FOUND 0)
+endif()
+
 list(APPEND SOURCES
 	source/bitmap.c
 	source/human.c
