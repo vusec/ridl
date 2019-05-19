@@ -99,6 +99,7 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 		source/apple/meltdown.c
 		source/apple/memory.c
 		source/apple/microcode.c
+		source/apple/os.c
 		source/apple/spectre.c
 		source/apple/ssb.c
 		source/apple/topology.c
