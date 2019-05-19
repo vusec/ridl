@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+
 #include <asprintf.h>
 #include <bitmap.h>
 #include <macros.h>
