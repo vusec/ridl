@@ -11,6 +11,9 @@ query_spectre_info(struct spectre_info *info)
 {
 	memset(info, 0, sizeof *info);
 
+	info->v1_affected = 1;
+	info->v2_affected = 1;
+
 	if (cpuid_has_feature("smep"))
 		info->smep = SMEP_ENABLED;
 

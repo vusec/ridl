@@ -6,22 +6,16 @@
 #include <info/cpuid.h>
 #include <info/topology.h>
 
-#include <vuln/ridl.h>
+#include <vuln/l1tf.h>
 
 void
-query_ridl_info(struct ridl_info *info)
+cpu_query_l1tf_info(struct l1tf_info *info)
 {
 	struct cpu_topology topo;
 	unsigned regs[4];
 	unsigned family, model, stepping;
 
 	memset(info, 0, sizeof *info);
-
-	if (check_smt()) {
-		info->smt_vuln = 1;
-	}
-
-	info->md_clear = cpuid_has_feature("md_clear");
 
 	if (cpuid_get_vendor_id() != CPUID_INTEL)
 		return;
@@ -45,6 +39,7 @@ query_ridl_info(struct ridl_info *info)
 	case 0x2d:
 	case 0x2e:
 	case 0x2f:
+	case 0x37:
 	case 0x3a:
 	case 0x3c:
 	case 0x3e:
@@ -52,27 +47,21 @@ query_ridl_info(struct ridl_info *info)
 	case 0x45:
 	case 0x46:
 	case 0x47:
-	case 0x4f:
-	case 0x4e:
-	case 0x56:
-	case 0x5e:
-		info->mfbds = 1;
-		info->msbds = 1;
-		info->mlpds = 1;
-		info->mdsum = 1;
-		break;
-	case 0x37:
 	case 0x4a:
 	case 0x4c:
 	case 0x4d:
+	case 0x4e:
+	case 0x4f:
+	case 0x56:
 	case 0x57:
 	case 0x5a:
 	case 0x5d:
+	case 0x5e:
 	case 0x65:
 	case 0x6e:
 	case 0x75:
 	case 0x85:
-		info->msbds = 1;
+		info->affected = 1;
 		break;
 	case 0x55: {
 		switch (stepping) {
@@ -81,10 +70,7 @@ query_ridl_info(struct ridl_info *info)
 		case 2:
 		case 3:
 		case 4:
-			info->mfbds = 1;
-			info->msbds = 1;
-			info->mlpds = 1;
-			info->mdsum = 1;
+			info->affected = 1;
 			break;
 		default: break;
 		}
@@ -93,15 +79,8 @@ query_ridl_info(struct ridl_info *info)
 		switch (stepping) {
 		case 9:
 		case 10:
-			info->mfbds = 1;
-			info->msbds = 1;
-			info->mlpds = 1;
-			info->mdsum = 1;
-			break;
 		case 11:
-			info->msbds = 1;
-			info->mlpds = 1;
-			info->mdsum = 1;
+			info->affected = 1;
 			break;
 		default: break;
 		}
@@ -111,15 +90,7 @@ query_ridl_info(struct ridl_info *info)
 		case 9:
 		case 10:
 		case 11:
-			info->mfbds = 1;
-			info->msbds = 1;
-			info->mlpds = 1;
-			info->mdsum = 1;
-			break;
-		case 12:
-			info->msbds = 1;
-			info->mlpds = 1;
-			info->mdsum = 1;
+			info->affected = 1;
 			break;
 		default: break;
 		}

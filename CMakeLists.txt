@@ -107,6 +107,7 @@ endif()
 
 list(APPEND SOURCES
 	source/x86/cpuid.c
+	source/x86/l1tf.c
 	source/x86/meltdown.c
 	source/x86/ridl.c)
 

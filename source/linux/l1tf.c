@@ -21,9 +21,7 @@ query_l1tf_info(struct l1tf_info *info)
 		info->l1d_flush = L1D_FLUSH_AVAIL;
 	}
 
-	read_cpu_topology(&topo);
-
-	if (check_topology_smt(&topo)) {
+	if (check_smt()) {
 		info->smt_vuln = 1;
 	}
 
