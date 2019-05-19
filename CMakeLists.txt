@@ -51,7 +51,8 @@ endif()
 add_definitions(-DNK_INCLUDE_DEFAULT_ALLOCATOR)
 add_definitions(-DNK_INCLUDE_COMMAND_USERDATA)
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang")
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang" AND
+	"${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
 	list(APPEND SOURCES
 		source/x86/clang/cpuid.c)
 elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
