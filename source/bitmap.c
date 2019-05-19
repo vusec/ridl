@@ -117,3 +117,48 @@ bitmap_count(struct bitmap *bmap)
 
 	return count;
 }
+
+int
+bitmap_and(struct bitmap *bmap, struct bitmap *mask)
+{
+	size_t i;
+	size_t nwords;
+
+	nwords = _MIN(bmap->nwords, mask->nwords);
+
+	for (i = 0; i < nwords; ++i) {
+		bmap->words[i] &= mask->words[i];
+	}
+
+	return 0;
+}
+
+int
+bitmap_or(struct bitmap *bmap, struct bitmap *mask)
+{
+	size_t i;
+	size_t nwords;
+
+	nwords = _MIN(bmap->nwords, mask->nwords);
+
+	for (i = 0; i < nwords; ++i) {
+		bmap->words[i] |= mask->words[i];
+	}
+
+	return 0;
+}
+
+int
+bitmap_xor(struct bitmap *bmap, struct bitmap *mask)
+{
+	size_t i;
+	size_t nwords;
+
+	nwords = _MIN(bmap->nwords, mask->nwords);
+
+	for (i = 0; i < nwords; ++i) {
+		bmap->words[i] ^= mask->words[i];
+	}
+
+	return 0;
+}

@@ -19,3 +19,9 @@ int
 bitmap_clear(struct bitmap *bmap, size_t n);
 size_t
 bitmap_count(struct bitmap *bmap);
+int
+bitmap_and(struct bitmap *bmap, struct bitmap *mask);
+int
+bitmap_or(struct bitmap *bmap, struct bitmap *mask);
+int
+bitmap_xor(struct bitmap *bmap, struct bitmap *mask);
