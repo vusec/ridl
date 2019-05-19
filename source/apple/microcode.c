@@ -16,7 +16,7 @@ get_microcode(void)
 	if (sysctlbyname("machdep.cpu.microcode_version", &value, &size, NULL, 0) < 0)
 		return NULL;
 
-	if (asprintf(&s, "0x%llu", value) < 0)
+	if (asprintf(&s, "0x%llx", value) < 0)
 		return NULL;
 
 	return s;
