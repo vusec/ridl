@@ -36,8 +36,7 @@ if (${PKG_CONFIG_FOUND})
 	pkg_check_modules(FREETYPE freetype2)
 endif()
 
-if (NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin" AND
-	${X11_FOUND})
+if (${CMAKE_SYSTEM_NAME} STREQUAL Linux AND ${X11_FOUND})
 	list(APPEND GUI_SOURCES
 		source/x11/canvas.c
 		source/x11/display.c
@@ -51,20 +50,20 @@ endif()
 add_definitions(-DNK_INCLUDE_DEFAULT_ALLOCATOR)
 add_definitions(-DNK_INCLUDE_COMMAND_USERDATA)
 
-if ("${CMAKE_C_COMPILER_ID}" STREQUAL "AppleClang" OR
-	"${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
+if (${CMAKE_C_COMPILER_ID} STREQUAL AppleClang OR
+	${CMAKE_C_COMPILER_ID} STREQUAL Clang)
 	list(APPEND SOURCES
 		source/x86/clang/cpuid.c)
-elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+elseif (${CMAKE_C_COMPILER_ID} STREQUAL GNU)
 	list(APPEND SOURCES
 		source/x86/gcc/cpuid.c)
-elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
+elseif (${CMAKE_C_COMPILER_ID} STREQUAL MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 	list(APPEND SOURCES
 		source/x86/msvc/cpuid.c)
 endif()
 
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+if (${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 	list(APPEND SOURCES
 		source/msw/l1tf.c
 		source/msw/meltdown.c
@@ -83,7 +82,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
 		source/msw/image.c
 		source/msw/window.c)
 	set(BUILD_GUI 1)
-elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
 	list(APPEND SOURCES
 		source/linux/l1tf.c
 		source/linux/meltdown.c
@@ -95,7 +94,7 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		source/linux/vuln.c
 		source/compat/topology.c
 		source/unix/os.c)
-elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
 	list(APPEND SOURCES
 		source/apple/l1tf.c
 		source/apple/meltdown.c
