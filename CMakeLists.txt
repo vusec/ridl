@@ -71,7 +71,8 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
 		source/msw/os.c
 		source/msw/spectre.c
 		source/msw/ssb.c
-		source/msw/topology.c)
+		source/msw/topology.c
+		source/compat/topology.c)
 	list(APPEND GUI_SOURCES
 		source/msw/canvas.c
 		source/msw/display.c
@@ -89,8 +90,8 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		source/linux/spectre.c
 		source/linux/ssb.c
 		source/linux/topology.c
-		source/linux/vuln.c)
-	list(APPEND SOURCES
+		source/linux/vuln.c
+		source/compat/topology.c
 		source/unix/os.c)
 elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 	list(APPEND SOURCES
