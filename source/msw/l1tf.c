@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <info/topology.h>
+
 #include <vuln/l1tf.h>
 
 #define WIN32_MEAN_AND_LEAN
@@ -39,6 +41,9 @@ query_l1tf_info(struct l1tf_info *info)
 	info->l1tf_present = 1;
 	info->pte_inv = kva_info.KvaShadowFlags.InvalidPteBit;
 	info->affected = kva_info.KvaShadowFlags.KvaShadowRequired;
-	info->smt_vuln = 1; /* TODO: how do we know? */
 	info->l1d_flush = kva_info.KvaShadowFlags.L1DataCacheFlushSupported;
+
+	if (check_smt()) {
+		info->smt_vuln = 1;
+	}
 }
