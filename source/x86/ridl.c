@@ -36,6 +36,7 @@ query_ridl_info(struct ridl_info *info)
 		return;
 
 	switch (model) {
+	case 0x17:
 	case 0x1a:
 	case 0x1e:
 	case 0x1f:
