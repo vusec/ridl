@@ -35,7 +35,7 @@ ui_create_window(struct ui_font *font, const char *title, int x, int y,
 	struct ui_window *window;
 	DWORD style = WS_OVERLAPPEDWINDOW;
 	DWORD exstyle = WS_EX_APPWINDOW;
-	int wlen, len;
+	int wlen;
 
 	window = calloc(1, sizeof *window);
 
@@ -44,10 +44,9 @@ ui_create_window(struct ui_font *font, const char *title, int x, int y,
 
 	AdjustWindowRectEx(&rect, style, FALSE, exstyle);
 
-	len = strlen(title);
-	wlen = MultiByteToWideChar(CP_UTF8, 0, title, len, NULL, 0);
+	wlen = MultiByteToWideChar(CP_UTF8, 0, title, -1 , NULL, 0);
 	wtitle = (WCHAR *)_alloca(wlen * sizeof *wtitle);
-	MultiByteToWideChar(CP_UTF8, 0, title, len, wtitle, wlen);
+	MultiByteToWideChar(CP_UTF8, 0, title, -1, wtitle, wlen);
 
 	window->win = CreateWindowEx(exstyle, L"window", wtitle,
 		style | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT,
