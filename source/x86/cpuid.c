@@ -126,6 +126,7 @@ amd_get_codename(void)
 }
 
 const char *intel_codenames[] = {
+	[0x17] = "Penryn",
 	[0x1a] = "Nehalem",
 	[0x1d] = "Dunnington",
 	[0x1e] = "Nehalem",
