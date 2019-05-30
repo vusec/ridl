@@ -14,28 +14,21 @@ sys_ffs(unsigned value)
 }
 
 static inline size_t
-sys_fls(unsigned value)
-{
-	unsigned long idx;
-
-	_BitScanReverse(&idx, value);
-
-	return idx;
-}
-
-static inline size_t
-sys_popcount(unsigned value)
-{
-	return __popcnt(value);
-}
-
-#if _M_X64
-static inline size_t
 sys_ffs64(unsigned value)
 {
 	unsigned long idx;
 
 	_BitScanForward64(&idx, value);
+
+	return idx;
+}
+
+static inline size_t
+sys_fls(unsigned value)
+{
+	unsigned long idx;
+
+	_BitScanReverse(&idx, value);
 
 	return idx;
 }
@@ -51,18 +44,20 @@ sys_fls64(uint64_t value)
 }
 
 static inline size_t
-sys_popcount64(uint64_t value)
+sys_popcount(unsigned value)
 {
-	return __popcnt64(value);
+	value -= ((value >> 1) & 0x55555555);
+	value = (value & 0x33333333) + ((value >> 2) & 0x33333333);
+	return (((value + (value >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
 }
-#else
+
 static inline size_t
 sys_popcount64(uint64_t value)
 {
 	return sys_popcount((unsigned)value) +
 		sys_popcount((unsigned)(value >> 32));
 }
-#endif
+
 #elif __GNUC__
 static inline size_t
 sys_ffs(unsigned value)
