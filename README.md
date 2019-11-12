@@ -14,10 +14,6 @@ Various proof-of-concept exploits for RIDL-class vulnerabilities.
 
 Tests for a variety of Intel CPU issues.
 
-## memkit
-
-This is used by the code in the tests directory; see the README there.
-
 ## tool
 
 This is our old MDS Tool code.
