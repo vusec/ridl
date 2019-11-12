@@ -2,7 +2,7 @@
 
 Benchmarking tools for testing RIDL across different privilege boundaries.
 
-This benchhmarks thhe cover channel bandwidth over the following boundaries:
+This was an early attempt to test a data channel over the following boundaries:
 - User-User
 - Kernel-User
 - VM-User
