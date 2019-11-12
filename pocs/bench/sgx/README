@@ -1,0 +1,55 @@
+Apply one of the provided patches to linux-sgx (we used revision
+c08051ec136e6df9a6816668b20a09077609370d) and then compile
+the LocalAttestation example, then run it using 'taskset -c 0 ./app'.
+For example 'git apply ~/vusec/sgx/blast-message.patch' in your
+linux-sgx tree. The patches modify the LocalAttestation example to
+simply spin in a loop and perform an operation which will be leaked.
+Use 'make SGX_PRERELEASE=1 SGX_DEBUG=0' to use pre-release mode
+for the enclave.
+
+For blast-message.patch, run 'make' and run the attacker using
+'taskset -c 4 ./message' (replace 4 with the core ID for the other
+hyperthread of core 0). You should get the following, which shows
+that writes by the SGX enclave can be leaked:
+
+alyssa@hex:~/sgx$ taskset -c 4 ./message
+53 47 58 53 47 58 53 47 58 53 47 58 53 47 58 21 53 47 58 53 47 58 53 47 58 53 47 58 53 47 58 21 53 47 58 53 47 58 53 47 58 53 47 58 53 47 58 21 53 47 58 53 47 58 53 47 58 53 47 58 53 47 58 21
+ S  G  X  S  G  X  S  G  X  S  G  X  S  G  X  !  S  G  X  S  G  X  S  G  X  S  G  X  S  G  X  !  S  G  X  S  G  X  S  G  X  S  G  X  S  G  X  !  S  G 
+X  S  G  X  S  G  X  S  G  X  S  G  X  !
+
+You will need nasm installed for the remaining tests. Sorry for
+the noise; as noted in the writeup, the cache line flushing is
+introducing noise (this PoC is not flushing targeted cache lines
+so you're just getting flushing due to the flush/reload, and it
+cycles though cache lines, but at some points you'll conflict
+with your own attacker cache lines). Turning off ASLR will
+make it more predictable (and also all those 0x5555s are at
+least easy to ignore). Improvements coming soon...
+
+For read-message.patch, run 'make' and run the attacker using
+'taskset -c 4 ./leak' (replace core ID as above). You should get
+the following (you may wish the pipe this through less, since
+it will report every successful leak), which shows that reads by
+the SGX enclave can be leaked:
+
+taskset -c 0 ./leak | grep +07 | head -n 2
+@00+07: 5258475352584753 (needed 1 tries)
+@08+07: 5258475352584753 (needed 1 tries)
+
+(5258475352584753 is the hex representation of the values
+'SGXRSGXR' in memory.)
+
+For leak-sgx.patch, follow the previous instructions but use
+'leak2' instead of 'leak'. Some SGX enclave registers contain
+the string 'SGX!' which is 53475821 in hex; leak/leak2 output
+little-endian qwords, so a valid leak will be '21584753'.
+Unfortunately the provided PoC for this case leaks byte-by-byte,
+so you have to be quite lucky to get this in the output without
+waiting a while; however you should see a lot of these values
+individually in the output. Other SGX enclave registers have
+been XORed with 0x20202020, so the value 01786773 is present
+in SGX registers and not (intentionally) in enclave memory.
+You can change it to use a more predictable value, e.g. change
+the patch to use just "ffffffff" and not "SGX!" and then you
+only have two values to spot, but I guess it doesn't matter. :)
+

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Copyright (C) 2017 Luca Filipozzi <luca.filipozzi@gmail.com>
+# Released subject to the terms of the Mozilla Public License.
+
+taskset -c `python get_victim.py` qemu-system-x86_64 --enable-kvm -m size=1G -smp cpus=1 -display none \
+  -drive if=virtio,file=disk.qcow2,format=qcow2,index=0,media=disk \
+  -net nic,name=eth0,model=virtio \
+  -net user,name=eth0,hostfwd=::10022-:22

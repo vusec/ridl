@@ -1,82 +1,24 @@
-Microsoft Windows
-=================
+# RIDL
 
-Fully supported. Build instructions will follow.
+This repository contains the following:
 
-Linux
-=====
+## exploits
 
-Clone the repository:
+The 'shadow' PoC leaks the /etc/shadow file from a non-root user; thanks to Jonas Theis.
 
-```
-git clone https://github.com/vusec/ridl
-cd ridl
-```
+## pocs
 
-Install the submodules (dependencies):
+Various proof-of-concept exploits for RIDL-class vulnerabilities.
 
-```
-git submodule init
-git submodule update
-```
+## tests
 
-Generate the Makefile using CMake:
+Tests for a variety of Intel CPU issues.
 
-```
-mkdir build
-cd build
-cmake ..
-```
+## memkit
 
-Build it using `make`:
+This is used by the code in the tests directory; see the README there.
 
-```
-make
-```
+## tool
 
-If everything went well, you should now have `mdstool` and `mdstool-cli`.
+This is our old MDS Tool code.
 
-Mac OS X
-========
-
-Clone the repository:
-
-```
-git clone https://github.com/vusec/ridl
-cd ridl
-```
-
-Install the submodules (dependencies):
-
-```
-git submodule init
-git submodule update
-```
-
-Generate the Makefile using CMake:
-
-```
-mkdir build
-cd build
-cmake ..
-```
-
-Build it using `make`:
-
-```
-make
-```
-
-If everything went well, you should now have `mdstool-cli`.
-
-FreeBSD
-=======
-
-TODO
-
-FAQ
-===
-
-Q) Can I run this in a VM?
-
-This program relies on the `cpuid` instruction, which may report the wrong information in a VM. Make sure to run this on the actual hardware without virtualization.
