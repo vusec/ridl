@@ -1,0 +1,11 @@
+This is one of the debug/test suites which was used for investigating TAA
+when writing the RIDL paper.
+
+It was shared with Intel on May 10th, 2019 (as alyssaleak2).
+
+It has not been updated since October 2018 (when we submitted the RIDL
+paper), so the comments probably don't make sense. Of course, the code also
+doesn't make sense either, which is why we have tidied-up PoCs elsewhere. :)
+
+Note that if you add mitigations after the NO_STORE_SECRET block, you might
+want to disable flushing the secret, to make sure the flush isn't leaking.
