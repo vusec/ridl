@@ -1,9 +1,9 @@
 CORES=3,7
 
-all: cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport
+all: cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport verw_bypass_l1des vrs
 
 clean:
-	rm cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport
+	rm cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport verw_bypass_l1des vrs
 
 run: all
 	# should leak 89 (from aborted TSX transaction)
@@ -34,7 +34,13 @@ run: all
 
 	# should leak 67 (userspace page table flags, no SMT/TSX)
 	./pgtable_leak_notsx | sort -n
+	
+	# l1des
+	./verw_bypass_l1des
+	
+	# vrs
+	taskset -c $(CORES) ./vrs
 
-%: %.c ridl.h leak_code.h
-	gcc -O3 -Wall -o $@ $<
+%: %.c ridl.h ridl2.h leak_code.h
+	gcc -O3 -o $@ $<
 
