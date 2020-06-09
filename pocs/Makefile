@@ -1,11 +1,16 @@
 CORES=3,7
 
-all: cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport verw_bypass_l1des vrs
+all: cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport verw_bypass_l1des vrs cpuid_leak_taa cpuid_leak
 
 clean:
-	rm cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport verw_bypass_l1des vrs
+	rm cross_transaction_leak verw_bypass alignment_write ridl_basic ridl_invalidpage taa_basic taa_read pgtable_leak pgtable_leak_notsx loadport verw_bypass_l1des vrs cpuid_leak_taa cpuid_leak
 
 run: all
+	# should leak cpuid buffer
+	taskset -c $(CORES) ./cpuid_leak_taa
+	# slower non-TAA version
+	taskset -c $(CORES) ./cpuid_leak
+	#
 	# should leak 89 (from aborted TSX transaction)
 	./cross_transaction_leak
 	#
@@ -40,6 +45,9 @@ run: all
 	
 	# vrs
 	taskset -c $(CORES) ./vrs
+
+cpuid_leak_taa: cpuid_leak.c ridl.h leak_code.h
+	gcc -O3 -Wall -DTAA -o $@ $<
 
 %: %.c ridl.h ridl2.h leak_code.h
 	gcc -O3 -o $@ $<
